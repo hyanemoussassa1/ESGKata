@@ -1,26 +1,48 @@
 package com.esgglobal;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StringCalculator {
-    public int add(String numbers) {
-        String delimiterRegex = "\n|,";
-        String numbersStr = numbers;
-        if (numbers == null || numbers.length() == 0){
+
+    public static final String PRE_DELIMITER_DOUBLE_FORWARD_SLASH = "//";
+    public static final String DELIMITER_REGEX_NEW_LINE_OR_COMMA = "\n|,";
+
+    public int add(String input) {
+        String numbersWithDelimiter;
+        String delimiterRegex;
+        if (input == null || input.isEmpty())
             return 0;
-        }
 
-        if (numbers.startsWith("//")){
-            int indexOfDelimiterNumberDivider = numbers.indexOf("\n");
-            delimiterRegex = numbers
+        if (input.startsWith(PRE_DELIMITER_DOUBLE_FORWARD_SLASH)){
+            int indexOfDelimiterNumberDivider = input.indexOf("\n");
+            delimiterRegex = input
                     .substring(0, indexOfDelimiterNumberDivider)
-                    .replaceFirst("//", "");
-            numbersStr = numbers.substring(indexOfDelimiterNumberDivider + 1);
+                    .replaceFirst(PRE_DELIMITER_DOUBLE_FORWARD_SLASH, "");
+            numbersWithDelimiter = input.substring(indexOfDelimiterNumberDivider + 1);
+        } else {
+            numbersWithDelimiter = input;
+            delimiterRegex = DELIMITER_REGEX_NEW_LINE_OR_COMMA;
         }
-
-        return Arrays.asList(numbersStr.split(delimiterRegex))
-                .stream()
+        List<Integer> numbers = Arrays
+                .stream(numbersWithDelimiter.split(delimiterRegex))
                 .map(Integer::valueOf)
+                .toList();
+        throwExceptionForNegativeNumbersInList(numbers);
+        return numbers.stream()
                 .reduce(0, Integer::sum);
+    }
+
+    private static void throwExceptionForNegativeNumbersInList(List<Integer> numberList) {
+        String negativeNumbers = numberList.stream()
+                .filter(entry -> entry < 0)
+                .map(Objects::toString)
+                .collect(Collectors.joining(","));
+        if (!negativeNumbers.isEmpty()) {
+            throw new InputValidationException("Negatives not allowed: " + negativeNumbers);
+        }
     }
 }

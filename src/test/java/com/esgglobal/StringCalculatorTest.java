@@ -59,4 +59,26 @@ public class StringCalculatorTest {
         Assertions.assertEquals(3, count);
     }
 
+    @Test
+    void testThatInputContainingNegativeNumbersThrowsException(){
+        String input = "-1,2";
+        StringCalculator stringCalculator = new StringCalculator();
+        InputValidationException thrown = Assertions.assertThrows(
+                InputValidationException.class,
+                () ->  stringCalculator.add(input),
+                "Didnt throw an exception");
+        Assertions.assertEquals("Negatives not allowed: -1", thrown.getMessage());
+    }
+
+    @Test
+    void testThatInputContainingNegativeNumbersThrowsExceptionWithCorrectMessage(){
+        String input = "2,-4,3,-5";
+        StringCalculator stringCalculator = new StringCalculator();
+        InputValidationException thrown = Assertions.assertThrows(
+                InputValidationException.class,
+                () ->  stringCalculator.add(input),
+                "Didnt throw an exception");
+        Assertions.assertEquals("Negatives not allowed: -4,-5", thrown.getMessage());
+    }
+
 }
