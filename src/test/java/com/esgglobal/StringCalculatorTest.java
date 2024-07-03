@@ -33,6 +33,11 @@ public class StringCalculatorTest {
         Assertions.assertEquals(3, count);
     }
 
-
+    @Test
+    void testThatAddCanHandleFiveNumbers(){
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add("10,10,10,10,10");
+        Assertions.assertEquals(50, count);
+    }
 
 }
