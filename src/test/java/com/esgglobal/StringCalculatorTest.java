@@ -51,4 +51,12 @@ public class StringCalculatorTest {
         Assertions.assertEquals(6, count);
     }
 
+    @Test
+    void testThatInputCanSpecifyTheDelimiter(){
+        String input = "//;\n1;2";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(3, count);
+    }
+
 }
