@@ -3,6 +3,8 @@ package com.esgglobal;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class StringCalculatorTest {
 
@@ -33,11 +35,20 @@ public class StringCalculatorTest {
         Assertions.assertEquals(3, count);
     }
 
-    @Test
-    void testThatAddCanHandleFiveNumbers(){
+    @ParameterizedTest
+    @ValueSource(strings = {"0,10,30,10", "10,10,10,10,10"})
+    void testThatAddCanHandleUnknowNumberOfNumbers(String input){
         StringCalculator stringCalculator = new StringCalculator();
-        int count = stringCalculator.add("10,10,10,10,10");
+        int count = stringCalculator.add(input);
         Assertions.assertEquals(50, count);
+    }
+
+    @Test
+    void testThatAddCanHandleNewLineAsDelimiter(){
+        String input = "1\n2,3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(6, count);
     }
 
 }
