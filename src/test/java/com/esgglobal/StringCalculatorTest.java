@@ -81,4 +81,28 @@ public class StringCalculatorTest {
         Assertions.assertEquals("Negatives not allowed: -4,-5", thrown.getMessage());
     }
 
+    @Test
+    void testThatNumbersGreaterThan1000AreIgnored(){
+        String input = "1001,2";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(2, count);
+    }
+
+    @Test
+    void testThat1000IsNotIgnored(){
+        String input = "1000,3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(1003, count);
+    }
+
+    @Test
+    void testThatNumbersGreaterThan1000AreIgnoredWithDifferentDelimiter(){
+        String input = "//;\n1001;2";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(2, count);
+    }
+
 }
