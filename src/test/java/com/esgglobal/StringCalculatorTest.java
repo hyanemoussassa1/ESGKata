@@ -52,8 +52,16 @@ public class StringCalculatorTest {
     }
 
     @Test
-    void testThatInputCanSpecifyTheDelimiter(){
+    void testThatInputCanSpecifyTheDelimiterSemicolon(){
         String input = "//;\n1;2";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(3, count);
+    }
+
+    @Test
+    void testThatInputCanSpecifyTheDelimiterLine(){
+        String input = "//|\n1|2";
         StringCalculator stringCalculator = new StringCalculator();
         int count = stringCalculator.add(input);
         Assertions.assertEquals(3, count);
@@ -104,5 +112,39 @@ public class StringCalculatorTest {
         int count = stringCalculator.add(input);
         Assertions.assertEquals(2, count);
     }
+
+    @Test
+    void testThatDelimiterCanBeOfLengthThree(){
+        String input = "//[|||]\n1|||2|||3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(6, count);
+    }
+
+    @Test
+    void testThatDelimiterCanBeOfLengthFour(){
+        String input = "//[;;;;]\n1;;;;2;;;;3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(6, count);
+    }
+
+    @Test
+    void testThatMultipleDelimitersAreAllowed(){
+        String input = "//[|][%]\n1|2%3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(6, count);
+    }
+
+    @Test
+    void testThatMultipleDelimitersOfAnyLengthAreAllowed(){
+        String input = "//[|||][%][%%]\n10|||2%%3";
+        StringCalculator stringCalculator = new StringCalculator();
+        int count = stringCalculator.add(input);
+        Assertions.assertEquals(15, count);
+    }
+
+
 
 }
